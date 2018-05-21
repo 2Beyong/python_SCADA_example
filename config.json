@@ -1,24 +1,14 @@
 {   
     "systemName": "Micro EMS Simple,example", 
-    "maxNodeNum": 8, 
+    "maxNodeNum": 8,
+    "remoteHost":"192.168.0.23", 
     "nodeList": [
         {   "name": "GoodWE ES 5K", 
             "type": "INV", 
             "describe": "energy-store inverter for photovoltaic,design by goodWE,single phase", 
             "port": 20001,  
             "proto":"INV_virtual"
-        }, 
-        {   "name": "Infinite Solar 5k Plus", 
-            "type": "INV", 
-            "describe": "10kwp energy-store inverter for photovoltaic,single phase", 
-            "port": 20002, 
-            "proto":"INV_virtual"
-        }, 
-        {   "name": "Normal AC Load", 
-            "type": "LOAD", 
-            "describe": "a virtual AC load,kwp 5kw", 
-            "port": 20003,  
-            "proto":"LOAD_default_1"
         }
+        
     ]
 }

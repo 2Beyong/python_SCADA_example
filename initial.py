@@ -1,5 +1,6 @@
 '''
 本模块用来初始化config
+运行这个模块
 '''
 
 import json
@@ -116,20 +117,34 @@ class DataClientsThread(threading.Thread):
         for i in self.sslist:
             i.startConnect()
         
-        asyncore.loop()
+        asyncore.loop() #讲道理这个不好关掉
 
 
+# Timer
+def fun_timer():
+    global NodeList
+    for i in NodeList:
+        i.updateData()
+    global timer
+    global G_timerFlag
+    if G_timerFlag==True:
+        timer = threading.Timer(2, fun_timer)
+        timer.start()
+    #不然程序就自然结束
+
+timer = threading.Timer(2, fun_timer)
+G_timerFlag = False #开启标记
 #Main
 fo = open('config.json','r+')
 obj_config = json.loads(fo.read())
-
+timer = threading.Timer(2, fun_timer)
 #DBG(obj_config)
 
 #初始化
 #global variable
 NodeList =[]
 SocketList=[]
-hostName="127.0.0.1"
+hostName=obj_config['remoteHost']
 print("Hello,here is ",obj_config['systemName'])
 for i in obj_config['nodeList']:
     
@@ -173,9 +188,16 @@ t1 = DataClientsThread(SocketList)
 t1.start()
 
 DBG("Socket Listening Start.")
-
+DBG("Start Time circle querying")
+G_timerFlag =True;
+timer.start()
 input("Press any Key to Start WebApi.\n")
 
 ApiProfessor.setSource(NodeList)
 ApiProfessor.testRun()
+
+#
+input("[for debug]Press any Key to Leave.")
+
+G_timerFlag= False;
 

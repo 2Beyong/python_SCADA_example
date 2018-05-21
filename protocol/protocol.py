@@ -7,7 +7,7 @@ class INV_virtual:
 
     # 从这里提取出对应的命令，所以用的手法是get.    
     def getRunningDataCommand(self):
-        return "^RD"
+        return "^PRD"
     def getswitchONCommand(self):
         pass
     def getswitchOFFCommand(self):
