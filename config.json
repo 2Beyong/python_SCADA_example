@@ -1,14 +1,25 @@
 {   
-    "systemName": "Micro EMS Simple,example", 
+    "systemName": "Micro EMS Simple Example", 
     "maxNodeNum": 8,
-    "remoteHost":"192.168.0.23", 
+    "remoteHost":"192.168.0.100", 
     "nodeList": [
-        {   "name": "GoodWE ES 5K", 
+        {   "name": "Distribute Generator 1st", 
             "type": "INV", 
-            "describe": "energy-store inverter for photovoltaic,design by goodWE,single phase", 
-            "port": 20001,  
-            "proto":"INV_virtual"
+            "describe": "太陽光発電", 
+            "remote_port": 20008,
+            "remote_ip":"192.168.0.100",  
+            "proto":"Goodwe_v1"
+        },
+        {
+            "name":"Power Control Unit ",
+            "type":"PCS",
+            "describe":"はんぱないって",
+            "remote_port":20001,
+            "remote_ip":"192.168.0.100",
+            "proto":"Infinite_PCS"
         }
+        
+        
         
     ]
 }

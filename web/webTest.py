@@ -1,21 +1,23 @@
 # flask测试
 FLASK_DEBUG =1
 from flask import Flask,Response
-
+from flask import render_template
 import json
-
-app = Flask(__name__)
+import random
+import math
+app = Flask(__name__,static_folder='build', static_url_path='/')
 
 g_nodeList=[]
 
+
 @app.route('/')
 def hello_world():
-    return 'Hello Flask!'
+    return render_template("index.html")
 
 @app.route('/CommonStatus')
 def CommonStatus():
     dick ={
-        'todayProduct':5,
+        'todayProduct':round( 5+ random.random()*3,2),
         'linePower':1345,
         'batteryCap':97.75,
         'isOnline':1, # 0 = off 1= on 并网
@@ -30,7 +32,7 @@ def Config():
     fo.close()
     return Response(rst, mimetype='application/json')
 
-@app.route('/test1')
+@app.route('/Nodes/')
 def printNode():
     rst=[]
     global g_nodeList
@@ -44,9 +46,24 @@ def printNode():
             "data":i.data
         }
         rst.append(k)
-    
-    return Response(json.dumps(rst), mimetype='application/json')
+        
+    T =Response(json.dumps(rst), mimetype='application/json')
+    T.headers['Access-Control-Allow-Origin'] = '*'
+    return T;
 
+
+@app.route('/Nodes/RunningData')
+def sendNodeRunningData():
+    rst=[]
+    global g_nodeList
+    for i in g_nodeList:
+        k=i.data
+        
+        rst.append(k)
+    
+    T =Response(json.dumps(rst), mimetype='application/json')
+    T.headers['Access-Control-Allow-Origin'] = '*'
+    return T;
 if __name__ == '__main__':
     app.run()
 
@@ -57,4 +74,4 @@ def setSource(ndL):
     
 
 def testRun():
-    app.run()
+    app.run(host="0.0.0.0", port=5000)
