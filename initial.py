@@ -47,7 +47,7 @@ for i in obj_Config['nodeList']:
         
         t_Node = INV(   name = i['name'],
                      
-                        describe=i[\'describe\'],   
+                        describe=i['describe'],   
                         port=i['port'],
                         proto=i['proto']
                      )
@@ -64,7 +64,7 @@ for i in obj_Config['nodeList']:
     if i['type']=='PCS':
         t_Node = PCS(   name = i['name'],
                      
-                        describe=i[\'describe\'],   
+                        describe=i['describe'],   
                         port=i['port'],
                         proto=i['proto']
                      )
