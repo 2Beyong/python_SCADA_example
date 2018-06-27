@@ -94,9 +94,9 @@ def TransRunningData(data):
     'eTotalLoad' :   str(trans(data,64,2) + trans(data,62,2)*65536) +'kwh',
     'totalPower' : trans(data,66,2,'w'),
     'vLoad' :trans(data,68,2,'v'),
-    'iLoad' :trans(data,70,2,'a')
+    'iLoad' :trans(data,70,2,'a'),
     #operationMode=data[70],
-
+    'ACPower':getACPower(data)
     }
     return result
 

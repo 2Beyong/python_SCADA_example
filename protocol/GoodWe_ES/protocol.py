@@ -23,11 +23,12 @@ class Goodwe_v1:
         self.raw_data.update(rst)
     
     def handleResponse(self,resp):
-        if resp[5] == 0X01 and resp[6] == 0x81 :
+        if resp[4] == 0X01 and resp[5] == 0x81 :
             self.updateData(
                 goodwe.TransRunningData(
                     goodwe.getDataContent(resp)
                 ))
+            
 
     def run(self):
         '''给线程用的函数，建议不要'''
@@ -73,7 +74,7 @@ class Goodwe_v1:
         self.remote_port = remote_port
     
     def readCommandSet(self):
-        self.c_queue.put(str(bytes.fromhex('AA 55 B0 7F 01 01 00 02 30'),'ascii'))
+        self.c_queue.put(bytes.fromhex('AA 55 B0 7F 01 01 00 02 30'))
 
     def setMaxOutputPower(self,power):
         if power<0:
@@ -87,3 +88,14 @@ class Goodwe_v1:
         goodwe.checkSum(t_command)
         DBG(t_command)
         self.c_queue.put(t_command)
+    
+    #
+    def getPQ(self):
+        rst={}
+        try:
+            rst['P']= self.raw_data['ACPower']
+            rst['Q']= 0
+        except KeyError as e:
+            DBG(e,'getPQerror')
+            return {'P':None,'Q':None}  
+        return rst 

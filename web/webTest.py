@@ -68,7 +68,7 @@ if __name__ == '__main__':
     app.run()
 
 def setSource(ndL):
-    print(ndL)
+    
     global g_nodeList
     g_nodeList=ndL
     

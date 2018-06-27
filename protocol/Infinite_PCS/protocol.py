@@ -55,24 +55,24 @@ class Infinite_PCS:
     
                         #如果是消息报文则执行
                         if t_command[1] == 'P':
-                            DBG(self.timeStamp(),"Time")
+                            #DBG(self.timeStamp(),"Time")
                             t_cmdContent = t_command[5:-1]
                            
                             # 规约转换成dict
                            
                             t_dataList = proto.transToList(t_response[5:-3])
-                            DBG(t_dataList)
+                            #DBG(t_dataList)
                             rst = eval('proto._{0}({1})'.format(t_cmdContent,t_dataList))
                             #DBG(rst,"Rst Dict")
-                            #self.raw_data = merge_two_dicts(self.raw_data,rst)
+                            
                             self.updateData(rst)
-                            DBG(self.raw_data)
+                            #DBG(self.raw_data)
                         #对于设置报文，只看 1 ，0 来决定是否成功
                         else:
                             rst_flag = True if t_response[1]>0x30  else False
-                            DBG(self.timeStamp(),"Time")
-                            DBG(t_command[5:-1],"Socket send:")
-                            DBG(rst_flag,"Socket receive")
+                            #DBG(self.timeStamp(),"Time")
+                            #DBG(t_command[5:-1],"Socket send:")
+                            #DBG(rst_flag,"Socket receive")
 
                         
                 else:
@@ -123,7 +123,15 @@ class Infinite_PCS:
         # 2 修改 并网功率限制
 
     def readCommandSet(self):
-        self.c_queue.put("^P003ID\r")
+        
         self.c_queue.put("^P003GS\r")    
-        self.c_queue.put("^P004MOD\r")
        
+    def getPQ(self):
+        rst={}
+        try:
+            # 加-号的原因，是保持，输出为正，输入为负
+            rst['P']= -self.raw_data['BatteryVoltage']*self.raw_data['BatteryCurrent']
+            rst['Q']= 0
+        except KeyError:
+            return {'P':None,'Q':None}  
+        return rst 
